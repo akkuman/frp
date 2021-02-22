@@ -62,7 +62,7 @@ var _ = Describe("[Feature: Client-Server]", func() {
 	f := framework.NewDefaultFramework()
 
 	Describe("Protocol", func() {
-		supportProtocols := []string{"tcp", "kcp", "websocket"}
+		supportProtocols := []string{"tcp", "kcp", "websocket", "wss"}
 		for _, protocol := range supportProtocols {
 			configures := &generalTestConfigures{
 				server: fmt.Sprintf(`
@@ -89,7 +89,7 @@ var _ = Describe("[Feature: Client-Server]", func() {
 	})
 
 	Describe("TLS", func() {
-		supportProtocols := []string{"tcp", "kcp", "websocket"}
+		supportProtocols := []string{"tcp", "kcp", "websocket", "wss"}
 		for _, protocol := range supportProtocols {
 			tmp := protocol
 			defineClientServerTest("TLS over "+strings.ToUpper(tmp), f, &generalTestConfigures{

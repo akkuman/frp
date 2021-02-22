@@ -1,6 +1,7 @@
 package net
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net"
@@ -8,7 +9,7 @@ import (
 	"net/url"
 	"time"
 
-	"golang.org/x/net/websocket"
+	"github.com/akkuman/websocket"
 )
 
 var (
@@ -16,8 +17,19 @@ var (
 )
 
 const (
-	FrpWebsocketPath = "/~!frp"
+	FrpWebsocketPath = "/index.js"
 )
+
+type WebsocketConfig struct {
+	Addr       string
+	Origin     string
+	SourceHost string
+	IsSecure   bool
+}
+
+// TODO: support config file
+// only for command version, because this var is global
+var WSConf WebsocketConfig
 
 type WebsocketListener struct {
 	ln       net.Listener
@@ -100,4 +112,57 @@ func ConnectWebsocketServer(addr string) (net.Conn, error) {
 		return nil, err
 	}
 	return conn, nil
+}
+
+// ConnectWebsocketServerWithCfg Connect Websocket Server with special config
+func ConnectWebsocketServerWithCfg(addr string) (net.Conn, error) {
+	var err error
+	var cfg *websocket.Config
+
+	if WSConf.IsSecure {
+		addr = "wss://" + addr + FrpWebsocketPath
+	} else {
+		addr = "ws://" + addr + FrpWebsocketPath
+	}
+	uri, err := url.Parse(addr)
+	if err != nil {
+		return nil, err
+	}
+
+	var origin string
+	if WSConf.IsSecure {
+		origin = "https://" + uri.Host
+	} else {
+		origin = "http://" + uri.Host
+	}
+
+	options := []websocket.ConfigOption{websocket.WithSourceHost(WSConf.SourceHost)}
+	if WSConf.IsSecure {
+		options = append(options, websocket.WithTLSConfig(&tls.Config{
+			InsecureSkipVerify: true,
+		}))
+	}
+
+	cfg, err = websocket.NewConfig(addr, origin, options...)
+	if err != nil {
+		return nil, err
+	}
+
+	cfg.Dialer = &net.Dialer{
+		Timeout: 10 * time.Second,
+	}
+	conn, err := websocket.DialConfig(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, nil
+}
+
+// SetWebsocketConfig 设置一些 websocket 基础配置
+func SetWebsocketConfig(sourceHost string, isSecure bool) {
+	WSConf = WebsocketConfig{
+		SourceHost: sourceHost,
+		IsSecure:   isSecure,
+	}
 }
