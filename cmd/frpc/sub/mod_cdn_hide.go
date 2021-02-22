@@ -26,8 +26,9 @@ func init() {
 }
 
 var modCDNCmd = &cobra.Command{
-	Use: "cdnhide",
-	Short: `采用域前置方案隐藏真实ip，创建socks5代理
+	Use:   "cdnhide",
+	Short: "采用域前置方案隐藏真实ip，创建socks5代理",
+	Long: `采用域前置方案隐藏真实ip，创建socks5代理
 
 	样例: frpc cdnhide -d api.ding.com -f .cdn.dnsv1.com -p wss -n 666xxx -r 61234 -t this_is_token --hb 2
 
