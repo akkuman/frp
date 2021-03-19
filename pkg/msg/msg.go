@@ -62,25 +62,25 @@ var (
 
 // When frpc start, client send this message to login to server.
 type Login struct {
-	Version      string            `json:"version"`
-	Hostname     string            `json:"hostname"`
-	Os           string            `json:"os"`
-	Arch         string            `json:"arch"`
-	User         string            `json:"user"`
-	PrivilegeKey string            `json:"privilege_key"`
-	Timestamp    int64             `json:"timestamp"`
-	RunID        string            `json:"run_id"`
-	Metas        map[string]string `json:"metas"`
+	Version      string            `json:"${frp_version}"`
+	Hostname     string            `json:"${frp_hostname}"`
+	Os           string            `json:"${frp_os}"`
+	Arch         string            `json:"${frp_arch}"`
+	User         string            `json:"${frp_user}"`
+	PrivilegeKey string            `json:"${frp_privilege_key}"`
+	Timestamp    int64             `json:"${frp_timestamp}"`
+	RunID        string            `json:"${frp_run_id}"`
+	Metas        map[string]string `json:"${frp_metas}"`
 
 	// Some global configures.
-	PoolCount int `json:"pool_count"`
+	PoolCount int `json:"${frp_pool_count}"`
 }
 
 type LoginResp struct {
-	Version       string `json:"version"`
-	RunID         string `json:"run_id"`
-	ServerUDPPort int    `json:"server_udp_port"`
-	Error         string `json:"error"`
+	Version       string `json:"${frp_version}"`
+	RunID         string `json:"${frp_run_id}"`
+	ServerUDPPort int    `json:"${frp_server_udp_port}"`
+	Error         string `json:"${frp_error}"`
 }
 
 // When frpc login success, send this message to frps for running a new proxy.
