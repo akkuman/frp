@@ -1,6 +1,6 @@
 module github.com/fatedier/frp
 
-go 1.15
+go 1.16
 
 require (
 	github.com/akkuman/websocket v0.0.0-20210206033205-a3bc84058852
