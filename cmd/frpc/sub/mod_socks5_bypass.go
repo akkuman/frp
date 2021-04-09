@@ -27,7 +27,7 @@ var modSocks5Cmd = &cobra.Command{
 	Short: "一键创建socks5代理",
 	Long: `一键创建socks5代理
 
-	样例: frpc socks5 -p tcp -s 127.0.0.1:7000 -n 666xxx -r 61234 -t this_is_token --hb 2
+	样例: frpc socks5 -p tcp -s 127.0.0.1:7000 -n 666xxx -r 61234 -t this_is_token --hb 2 --tls_enable
 
 	说明: 其中需要关注的只有以上几个参数，必填的参数有 -r(--remote_port)，其他参数的默认值请查看help帮助文档
 
@@ -44,9 +44,10 @@ var modSocks5Cmd = &cobra.Command{
 		// 基础配置预处理
 		if clientCfg.Protocol == "ws" {
 			clientCfg.Protocol = "websocket"
+		} else if clientCfg.Protocol == "wss" {
+			fmt.Println("不支持wss协议")
+			os.Exit(1)
 		}
-
-		clientCfg.TLSEnable = true
 
 		cfg := &config.TCPProxyConf{}
 		cfg.ProxyName = proxyName

@@ -67,7 +67,6 @@ var modCDNCmd = &cobra.Command{
 		if cfg.ProxyName == "" {
 			cfg.ProxyName = fmt.Sprintf("god_%d", rport)
 		}
-		fmt.Println(rport)
 		cfg.ProxyType = consts.TCPProxy
 		cfg.Plugin = "socks5"
 		cfg.RemotePort = rport
