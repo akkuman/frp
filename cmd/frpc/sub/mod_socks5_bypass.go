@@ -35,7 +35,7 @@ var modSocks5Cmd = &cobra.Command{
 	1. -n(--proxy_name)，默认的代理名称生成规则是 god_{remote_port}，可以通过设置这个参数来进行覆盖
 	`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		clientCfg, err := parseClientCommonCfg(CfgFileTypeCmd, nil)
+		clientCfg, err := parseClientCommonCfgFromCmd()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

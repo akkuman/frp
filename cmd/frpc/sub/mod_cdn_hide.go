@@ -39,7 +39,7 @@ var modCDNCmd = &cobra.Command{
 	2. -s(--server_addr)，不用理会这个参数，当在这个运行模式下，会根据你传入的是ws(websocket)还是wss区分是80还是443端口，而主机将会采用 cdn_source + cdn_suf
 	`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		clientCfg, err := parseClientCommonCfg(CfgFileTypeCmd, nil)
+		clientCfg, err := parseClientCommonCfgFromCmd()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
